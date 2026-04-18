@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details Management - Government Secondary School Nansad</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f7fb;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+        .page-header h1 {
+            margin-bottom: 0.5rem;
+        }
+        .stats-card {
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.12);
+            border: none;
+        }
+        .student-table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+        .student-table thead {
+            background: #4f46e5;
+            color: white;
+        }
+        .student-card {
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border: none;
+        }
+        .badge-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .status-active { background: #22c55e; }
+        .status-inactive { background: #64748b; }
+        .action-btn {
+            min-width: 36px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand" href="index.html"><i class="fas fa-school me-2"></i>School Nansad</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" href="student-manage.html">Student Details</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                <li class="nav-item"><button class="btn logout-btn" onclick="logout()">Log Out</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="page-header text-center">
+            <h1><i class="fas fa-users me-2"></i>Student Details Management</h1>
+            <p class="lead">View every student record with attendance, subject-wise marks, family details, caste and school information.</p>
+            <button id="addStudentButton" class="btn btn-light mt-3" onclick="openAddStudentModal()">
+                <i class="fas fa-user-plus me-2"></i>Add New Student
+            </button>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card p-4 text-center">
+                    <h5>Total Students</h5>
+                    <h2 id="totalStudents">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card p-4 text-center">
+                    <h5>Avg Attendance</h5>
+                    <h2 id="avgAttendance">0%</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card p-4 text-center">
+                    <h5>Avg GPA</h5>
+                    <h2 id="avgGPA">0.0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card p-4 text-center">
+                    <h5>Active Logs</h5>
+                    <h2 id="activeUsers">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-4 mb-4 student-card">
+            <div class="row gy-3">
+                <div class="col-md-4">
+                    <input id="searchInput" class="form-control" type="search" placeholder="Search by name, class, roll, caste">
+                </div>
+                <div class="col-md-4">
+                    <select id="filterClass" class="form-select">
+                        <option value="">All Classes</option>
+                        <option value="IX">Class IX</option>
+                        <option value="X">Class X</option>
+                        <option value="XI">Class XI</option>
+                        <option value="XII">Class XII</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="filterSection" class="form-select">
+                        <option value="">All Sections</option>
+                        <option value="A">Section A</option>
+                        <option value="B">Section B</option>
+                        <option value="C">Section C</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card student-card mb-4">
+            <div class="card-body">
+                <div class="table-responsive student-table">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Roll</th>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Caste</th>
+                                <th>Father</th>
+                                <th>Mother</th>
+                                <th>Attendance</th>
+                                <th>GPA</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card student-card p-4">
+                    <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Attendance Distribution</h5>
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card student-card p-4">
+                    <h5 class="mb-3"><i class="fas fa-book me-2"></i>Average Marks by Subject</h5>
+                    <canvas id="marksChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="studentModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentModalTitle">Student Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4 mb-4">
+                            <div class="card p-4">
+                                <h6 class="mb-3">Personal Info</h6>
+                                <p><strong>Name:</strong> <span id="detailName"></span></p>
+                                <p><strong>Roll No:</strong> <span id="detailRoll"></span></p>
+                                <p><strong>Class:</strong> <span id="detailClass"></span></p>
+                                <p><strong>Section:</strong> <span id="detailSection"></span></p>
+                                <p><strong>Caste:</strong> <span id="detailCaste"></span></p>
+                                <p><strong>Gender:</strong> <span id="detailGender"></span></p>
+                                <p><strong>DOB:</strong> <span id="detailDOB"></span></p>
+                                <p><strong>Blood Group:</strong> <span id="detailBlood"></span></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-4">
+                            <div class="card p-4">
+                                <h6 class="mb-3">Family & Contact</h6>
+                                <p><strong>Father:</strong> <span id="detailFather"></span></p>
+                                <p><strong>Mother:</strong> <span id="detailMother"></span></p>
+                                <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                                <p><strong>Phone:</strong> <span id="detailPhone"></span></p>
+                                <p><strong>Address:</strong> <span id="detailAddress"></span></p>
+                                <p><strong>Guardian Occupation:</strong> <span id="detailGuardian"></span></p>
+                                <p><strong>Transport:</strong> <span id="detailTransport"></span></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-4">
+                            <div class="card p-4">
+                                <h6 class="mb-3">School Info</h6>
+                                <p><strong>Admission No:</strong> <span id="detailAdmission"></span></p>
+                                <p><strong>Previous School:</strong> <span id="detailPrevious"></span></p>
+                                <p><strong>Fee Status:</strong> <span id="detailFeeStatus"></span></p>
+                                <p><strong>Attendance %:</strong> <span id="detailAttendance"></span></p>
+                                <p><strong>Average Grade:</strong> <span id="detailGPA"></span></p>
+                                <p><strong>Subjects:</strong> <span id="detailSubjects"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4">
+                        <h6 class="mb-3">Subject-wise Marks</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Marks</th>
+                                        <th>Grade</th>
+                                        <th>Exam</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="marksTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="editStudentBtn" type="button" class="btn btn-primary">Edit Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Student Record</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStudentForm">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" id="editName">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Class</label>
+                                <select class="form-select" id="editClass">
+                                    <option value="IX">IX</option>
+                                    <option value="X">X</option>
+                                    <option value="XI">XI</option>
+                                    <option value="XII">XII</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Section</label>
+                                <select class="form-select" id="editSection">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Roll No</label>
+                                <input type="text" class="form-control" id="editRoll">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Caste</label>
+                                <input type="text" class="form-control" id="editCaste">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Attendance %</label>
+                                <input type="text" class="form-control" id="editAttendance">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">GPA</label>
+                                <input type="text" class="form-control" id="editGPA">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Father's Name</label>
+                                <input type="text" class="form-control" id="editFather">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Mother's Name</label>
+                                <input type="text" class="form-control" id="editMother">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="editPhone">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" id="editAddress">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Fee Status</label>
+                                <select class="form-select" id="editFeeStatus">
+                                    <option value="Paid">Paid</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Overdue">Overdue</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStudentEdit()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const studentData = [
+            {
+                id: 1,
+                roll: '001',
+                name: 'Riya Sharma',
+                class: 'X',
+                section: 'A',
+                caste: 'General',
+                father: 'Arun Sharma',
+                mother: 'Geeta Sharma',
+                email: 'riya@school.com',
+                phone: '+91 9876543210',
+                address: '12 Rose Street, Nansad',
+                guardian: 'Arun Sharma',
+                admission: '2023-001',
+                previous: 'Nansad Middle School',
+                transport: 'Bus',
+                blood: 'O+',
+                gender: 'Female',
+                dob: '15/05/2008',
+                caste: 'General',
+                feeStatus: 'Paid',
+                attendance: '95%',
+                gpa: '9.2',
+                subjects: 5,
+                status: 'active',
+                marks: [
+                    { subject: 'Mathematics', marks: 98, grade: 'A+', exam: 'Final' },
+                    { subject: 'Science', marks: 96, grade: 'A+', exam: 'Final' },
+                    { subject: 'English', marks: 94, grade: 'A', exam: 'Final' },
+                    { subject: 'Social Studies', marks: 92, grade: 'A', exam: 'Final' },
+                    { subject: 'Hindi', marks: 95, grade: 'A+', exam: 'Final' }
+                ]
+            },
+            {
+                id: 2,
+                roll: '002',
+                name: 'Amit Kumar',
+                class: 'X',
+                section: 'A',
+                caste: 'OBC',
+                father: 'Rajesh Kumar',
+                mother: 'Sunita Kumar',
+                email: 'amit@school.com',
+                phone: '+91 9876543211',
+                address: '24 Park Avenue, Nansad',
+                guardian: 'Rajesh Kumar',
+                admission: '2023-002',
+                previous: 'Nansad Middle School',
+                transport: 'Parent Pickup',
+                blood: 'B+',
+                gender: 'Male',
+                dob: '20/03/2008',
+                feeStatus: 'Pending',
+                attendance: '92%',
+                gpa: '8.8',
+                subjects: 5,
+                status: 'active',
+                marks: [
+                    { subject: 'Mathematics', marks: 92, grade: 'A', exam: 'Final' },
+                    { subject: 'Science', marks: 90, grade: 'A', exam: 'Final' },
+                    { subject: 'English', marks: 88, grade: 'B+', exam: 'Final' },
+                    { subject: 'Social Studies', marks: 91, grade: 'A', exam: 'Final' },
+                    { subject: 'Hindi', marks: 90, grade: 'A', exam: 'Final' }
+                ]
+            },
+            {
+                id: 3,
+                roll: '003',
+                name: 'Priya Singh',
+                class: 'XI',
+                section: 'B',
+                caste: 'SC',
+                father: 'Vikram Singh',
+                mother: 'Alka Singh',
+                email: 'priya@school.com',
+                phone: '+91 9876543212',
+                address: '8 Green Lane, Nansad',
+                guardian: 'Alka Singh',
+                admission: '2023-003',
+                previous: 'Nansad Public School',
+                transport: 'School Bus',
+                blood: 'A+',
+                gender: 'Female',
+                dob: '02/11/2007',
+                feeStatus: 'Paid',
+                attendance: '98%',
+                gpa: '9.6',
+                subjects: 5,
+                status: 'active',
+                marks: [
+                    { subject: 'Mathematics', marks: 96, grade: 'A+', exam: 'Final' },
+                    { subject: 'Science', marks: 98, grade: 'A+', exam: 'Final' },
+                    { subject: 'English', marks: 95, grade: 'A+', exam: 'Final' },
+                    { subject: 'Biology', marks: 94, grade: 'A', exam: 'Final' },
+                    { subject: 'History', marks: 97, grade: 'A+', exam: 'Final' }
+                ]
+            }
+        ];
+
+        let currentUserType = '';
+        let selectedStudentId = null;
+        let attendanceChart;
+        let marksChart;
+
+        function ensureAccess() {
+            const userType = localStorage.getItem('userType');
+            if (!userType || (userType !== 'admin' && userType !== 'teacher')) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUserType = userType;
+            document.getElementById('addStudentButton').style.display = userType === 'admin' ? 'inline-block' : 'none';
+        }
+
+        function loadStudentsTable(students) {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+
+            students.forEach(student => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${student.roll}</td>
+                    <td>${student.name}</td>
+                    <td>${student.class}</td>
+                    <td>${student.section}</td>
+                    <td>${student.caste}</td>
+                    <td>${student.father}</td>
+                    <td>${student.mother}</td>
+                    <td>${student.attendance}</td>
+                    <td>${student.gpa}</td>
+                    <td><span class="badge badge-status ${student.status === 'active' ? 'status-active' : 'status-inactive'}">${student.status}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary action-btn" onclick="openStudentModal(${student.id})"><i class="fas fa-eye"></i></button>
+                        ${currentUserType === 'admin' ? `<button class="btn btn-sm btn-warning action-btn" onclick="editStudent(${student.id})"><i class="fas fa-edit"></i></button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateDashboard() {
+            const total = studentData.length;
+            const avgAttendance = (studentData.reduce((sum, s) => sum + parseInt(s.attendance), 0) / total).toFixed(1);
+            const avgGPA = (studentData.reduce((sum, s) => sum + parseFloat(s.gpa), 0) / total).toFixed(2);
+
+            document.getElementById('totalStudents').textContent = total;
+            document.getElementById('avgAttendance').textContent = `${avgAttendance}%`;
+            document.getElementById('avgGPA').textContent = avgGPA;
+            document.getElementById('activeUsers').textContent = total;
+        }
+
+        function buildCharts() {
+            const ctx1 = document.getElementById('attendanceChart').getContext('2d');
+            const ctx2 = document.getElementById('marksChart').getContext('2d');
+
+            const labels = studentData.map(s => s.name);
+            const attendanceValues = studentData.map(s => parseInt(s.attendance));
+            const subjectTotals = {};
+            let subjectCount = 0;
+
+            studentData.forEach(student => {
+                student.marks.forEach(item => {
+                    if (!subjectTotals[item.subject]) subjectTotals[item.subject] = 0;
+                    subjectTotals[item.subject] += item.marks;
+                });
+                subjectCount = student.marks.length;
+            });
+
+            const subjectLabels = Object.keys(subjectTotals);
+            const subjectAverages = subjectLabels.map(subject => (subjectTotals[subject] / studentData.length).toFixed(1));
+
+            if (attendanceChart) attendanceChart.destroy();
+            if (marksChart) marksChart.destroy();
+
+            attendanceChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Attendance %',
+                        backgroundColor: '#4f46e5',
+                        data: attendanceValues
+                    }]
+                },
+                options: { responsive: true }
+            });
+
+            marksChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: subjectLabels,
+                    datasets: [{
+                        label: 'Average Marks',
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        data: subjectAverages
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const classFilter = document.getElementById('filterClass').value;
+            const sectionFilter = document.getElementById('filterSection').value;
+
+            const filtered = studentData.filter(s => {
+                const matchesSearch = [s.name, s.roll, s.class, s.section, s.caste, s.father, s.mother]
+                    .some(field => field.toLowerCase().includes(searchTerm));
+                const matchesClass = !classFilter || s.class === classFilter;
+                const matchesSection = !sectionFilter || s.section === sectionFilter;
+                return matchesSearch && matchesClass && matchesSection;
+            });
+            loadStudentsTable(filtered);
+        }
+
+        function openStudentModal(id) {
+            const student = studentData.find(s => s.id === id);
+            if (!student) return;
+            selectedStudentId = id;
+            document.getElementById('studentModalTitle').textContent = `Student Details — ${student.name}`;
+            document.getElementById('detailName').textContent = student.name;
+            document.getElementById('detailRoll').textContent = student.roll;
+            document.getElementById('detailClass').textContent = student.class;
+            document.getElementById('detailSection').textContent = student.section;
+            document.getElementById('detailCaste').textContent = student.caste;
+            document.getElementById('detailGender').textContent = student.gender;
+            document.getElementById('detailDOB').textContent = student.dob;
+            document.getElementById('detailBlood').textContent = student.blood;
+            document.getElementById('detailFather').textContent = student.father;
+            document.getElementById('detailMother').textContent = student.mother;
+            document.getElementById('detailEmail').textContent = student.email;
+            document.getElementById('detailPhone').textContent = student.phone;
+            document.getElementById('detailAddress').textContent = student.address;
+            document.getElementById('detailGuardian').textContent = student.guardian;
+            document.getElementById('detailTransport').textContent = student.transport;
+            document.getElementById('detailAdmission').textContent = student.admission;
+            document.getElementById('detailPrevious').textContent = student.previous;
+            document.getElementById('detailFeeStatus').textContent = student.feeStatus;
+            document.getElementById('detailAttendance').textContent = student.attendance;
+            document.getElementById('detailGPA').textContent = student.gpa;
+            document.getElementById('detailSubjects').textContent = student.subjects;
+
+            const marksBody = document.getElementById('marksTableBody');
+            marksBody.innerHTML = '';
+            student.marks.forEach(mark => {
+                marksBody.innerHTML += `<tr><td>${mark.subject}</td><td>${mark.marks}</td><td>${mark.grade}</td><td>${mark.exam}</td></tr>`;
+            });
+
+            const editBtn = document.getElementById('editStudentBtn');
+            editBtn.style.display = currentUserType === 'admin' ? 'inline-block' : 'none';
+
+            const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+            modal.show();
+        }
+
+        function editStudent(id) {
+            if (currentUserType !== 'admin') return;
+            const student = studentData.find(s => s.id === id);
+            if (!student) return;
+
+            selectedStudentId = id;
+            document.getElementById('editStudentModal').querySelector('.modal-title').textContent = 'Edit Student Record';
+            document.getElementById('editName').value = student.name;
+            document.getElementById('editClass').value = student.class;
+            document.getElementById('editSection').value = student.section;
+            document.getElementById('editRoll').value = student.roll;
+            document.getElementById('editCaste').value = student.caste;
+            document.getElementById('editAttendance').value = student.attendance;
+            document.getElementById('editGPA').value = student.gpa;
+            document.getElementById('editFather').value = student.father;
+            document.getElementById('editMother').value = student.mother;
+            document.getElementById('editPhone').value = student.phone;
+            document.getElementById('editEmail').value = student.email;
+            document.getElementById('editAddress').value = student.address;
+            document.getElementById('editFeeStatus').value = student.feeStatus;
+
+            const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+            modal.show();
+        }
+
+        function openAddStudentModal() {
+            if (currentUserType !== 'admin') return;
+            selectedStudentId = null;
+            document.getElementById('editStudentForm').reset();
+            document.getElementById('editStudentModal').querySelector('.modal-title').textContent = 'Add New Student';
+            document.getElementById('editStudentBtn').style.display = 'none';
+            const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+            modal.show();
+        }
+
+        function saveStudentEdit() {
+            const student = studentData.find(s => s.id === selectedStudentId);
+            if (!student && selectedStudentId !== null) return;
+
+            const updated = {
+                name: document.getElementById('editName').value,
+                class: document.getElementById('editClass').value,
+                section: document.getElementById('editSection').value,
+                roll: document.getElementById('editRoll').value,
+                caste: document.getElementById('editCaste').value,
+                attendance: document.getElementById('editAttendance').value,
+                gpa: document.getElementById('editGPA').value,
+                father: document.getElementById('editFather').value,
+                mother: document.getElementById('editMother').value,
+                phone: document.getElementById('editPhone').value,
+                email: document.getElementById('editEmail').value,
+                address: document.getElementById('editAddress').value,
+                feeStatus: document.getElementById('editFeeStatus').value
+            };
+
+            if (selectedStudentId) {
+                Object.assign(student, updated);
+            } else {
+                const newId = Math.max(...studentData.map(s => s.id)) + 1;
+                studentData.push({
+                    id: newId,
+                    ...updated,
+                    section: updated.section,
+                    caste: updated.caste,
+                    father: updated.father,
+                    mother: updated.mother,
+                    admission: `2023-00${newId}`,
+                    previous: 'New Admission',
+                    transport: 'Unknown',
+                    blood: 'Unknown',
+                    gender: 'Unknown',
+                    dob: 'Unknown',
+                    guardian: updated.father,
+                    feeStatus: updated.feeStatus,
+                    attendance: updated.attendance,
+                    gpa: updated.gpa,
+                    subjects: 5,
+                    status: 'active',
+                    marks: []
+                });
+            }
+
+            loadStudentsTable(studentData);
+            updateDashboard();
+            buildCharts();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editStudentModal'));
+            modal.hide();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('filterClass').addEventListener('change', applyFilters);
+        document.getElementById('filterSection').addEventListener('change', applyFilters);
+        document.getElementById('editStudentBtn').addEventListener('click', function() {
+            if (currentUserType === 'admin' && selectedStudentId) {
+                editStudent(selectedStudentId);
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            ensureAccess();
+            loadStudentsTable(studentData);
+            updateDashboard();
+            buildCharts();
+        });
+         function logout() {
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

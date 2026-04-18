@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details - Government Secondary School Nansad</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .student-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .student-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .grade-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .grade-A { background-color: #28a745; color: white; }
+        .grade-B { background-color: #17a2b8; color: white; }
+        .grade-C { background-color: #ffc107; color: black; }
+        .grade-D { background-color: #fd7e14; color: white; }
+        .grade-F { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="school.avif" alt="School Logo" class="logo">
+            <h1>Government Secondary and Higher Secondary School Nansad</h1>
+             <button class="btn logout-btn" onclick="logout()" style="color:white"></button>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about-school.html">About School</a></li>
+                <li><a href="stream.html">Streams</a></li>
+                <li><a href="Staff.html">School Staff</a></li>
+                <li><a href="facilities.html">Facilities</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="school-life.html">School Life</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admissions.html">Admissions</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <!-- Login Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-6">
+                <div class="card student-card">
+                    <div class="card-header text-center">
+                        <h4><i class="fas fa-sign-in-alt me-2"></i>Student/Admin Login</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember">Remember me</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">Demo: Use any email/password to login</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="student-header">
+            <h2><i class="fas fa-user-graduate me-2"></i>Student Details</h2>
+            <p>View your academic information and performance</p>
+        </div>
+
+        <!-- Student Info -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card student-card">
+                    <div class="card-body text-center">
+                        <img src="notebook.avif" alt="Student Photo" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                        <h4>Riya Sharma</h4>
+                        <p class="text-muted">Class X - Section A</p>
+                        <p><i class="fas fa-id-card me-1"></i>Roll No: 001</p>
+                        <p><i class="fas fa-envelope me-1"></i>riya.sharma@email.com</p>
+                        <p><i class="fas fa-phone me-1"></i>+91 9876543210</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-calendar-check fa-2x mb-2"></i>
+                            <h4>95%</h4>
+                            <small>Attendance</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-chart-line fa-2x mb-2"></i>
+                            <h4>9.2</h4>
+                            <small>GPA</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-trophy fa-2x mb-2"></i>
+                            <h4>1st</h4>
+                            <small>Rank</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                            <h4>$0</h4>
+                            <small>Pending Fees</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Performance -->
+        <div class="card student-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Academic Performance</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                                <th>Exam Type</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mathematics</td>
+                                <td>98</td>
+                                <td><span class="grade-badge grade-A">A+</span></td>
+                                <td>Final Exam</td>
+                                <td>March 2024</td>
+                            </tr>
+                            <tr>
+                                <td>Science</td>
+                                <td>96</td>
+                                <td><span class="grade-badge grade-A">A+</span></td>
+                                <td>Final Exam</td>
+                                <td>March 2024</td>
+                            </tr>
+                            <tr>
+                                <td>English</td>
+                                <td>94</td>
+                                <td><span class="grade-badge grade-A">A</span></td>
+                                <td>Final Exam</td>
+                                <td>March 2024</td>
+                            </tr>
+                            <tr>
+                                <td>Social Studies</td>
+                                <td>92</td>
+                                <td><span class="grade-badge grade-A">A</span></td>
+                                <td>Final Exam</td>
+                                <td>March 2024</td>
+                            </tr>
+                            <tr>
+                                <td>Hindi</td>
+                                <td>95</td>
+                                <td><span class="grade-badge grade-A">A+</span></td>
+                                <td>Final Exam</td>
+                                <td>March 2024</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Record -->
+        <div class="card student-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Attendance Record (Last 30 Days)</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-success text-white rounded">
+                            <h3>28</h3>
+                            <small>Present</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-danger text-white rounded">
+                            <h3>1</h3>
+                            <small>Absent</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-warning text-white rounded">
+                            <h3>1</h3>
+                            <small>Late</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-info text-white rounded">
+                            <h3>95%</h3>
+                            <small>Percentage</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card student-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-download me-2"></i>Download Report Card
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-success w-100">
+                            <i class="fas fa-money-bill-wave me-2"></i>Pay Fees
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-info w-100">
+                            <i class="fas fa-envelope me-2"></i>Messages
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="#" class="btn btn-outline-warning w-100">
+                            <i class="fas fa-calendar-alt me-2"></i>Timetable
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Handle login form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                // Hide login section and show student details
+                document.querySelector('.row.justify-content-center.mb-5').style.display = 'none';
+                document.querySelector('.student-header').style.display = 'block';
+                document.querySelectorAll('.student-card').forEach(card => {
+                    if (!card.querySelector('h4').textContent.includes('Login')) {
+                        card.style.display = 'block';
+                    }
+                });
+
+                // Show success message
+                showAlert('Login successful! Welcome to your dashboard.', 'success');
+            } else {
+                showAlert('Please enter both email and password.', 'danger');
+            }
+        });
+
+        // Show alert function
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.querySelector('main').insertBefore(alertDiv, document.querySelector('main').firstChild);
+
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Initially hide student details, show only login
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.student-header').style.display = 'none';
+            document.querySelectorAll('.student-card').forEach(card => {
+                if (!card.querySelector('h4') || !card.querySelector('h4').textContent.includes('Login')) {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

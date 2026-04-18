@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Government Secondary School Nansad</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            margin: 20px;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .login-tabs {
+            border-bottom: none;
+        }
+        .login-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .login-tabs .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 0;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 500;
+            width: 100%;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            transform: translateY(-2px);
+        }
+        .school-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            display: block;
+        }
+        .demo-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <img src="school.avif" alt="School Logo" class="school-logo">
+            <h2>Government Secondary and Higher Secondary School Nansad</h2>
+            <p>Login to access your account</p>
+        </div>
+
+        <div class="p-4">
+            <ul class="nav nav-tabs login-tabs" id="loginTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab">
+                        <i class="fas fa-user-graduate me-2"></i>Student Login
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="teacher-tab" data-bs-toggle="tab" data-bs-target="#teacher" type="button" role="tab">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Teacher Login
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab">
+                        <i class="fas fa-user-shield me-2"></i>Admin Login
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-4" id="loginTabsContent">
+                <!-- Student Login Tab -->
+                <div class="tab-pane fade show active" id="student" role="tabpanel">
+                    <form id="studentLoginForm">
+                        <div class="mb-3">
+                            <label for="studentEmail" class="form-label">
+                                <i class="fas fa-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" class="form-control" id="studentEmail" placeholder="student@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="studentPassword" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Password
+                            </label>
+                            <input type="password" class="form-control" id="studentPassword" placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="studentRemember">
+                            <label class="form-check-label" for="studentRemember">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-login">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login as Student
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Teacher Login Tab -->
+                <div class="tab-pane fade" id="teacher" role="tabpanel">
+                    <form id="teacherLoginForm">
+                        <div class="mb-3">
+                            <label for="teacherEmail" class="form-label">
+                                <i class="fas fa-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" class="form-control" id="teacherEmail" placeholder="teacher@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="teacherPassword" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Password
+                            </label>
+                            <input type="password" class="form-control" id="teacherPassword" placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="teacherRemember">
+                            <label class="form-check-label" for="teacherRemember">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-login">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login as Teacher
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Admin Login Tab -->
+                <div class="tab-pane fade" id="admin" role="tabpanel">
+                    <form id="adminLoginForm">
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">
+                                <i class="fas fa-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" class="form-control" id="adminEmail" placeholder="admin@email.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Password
+                            </label>
+                            <input type="password" class="form-control" id="adminPassword" placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="adminRemember">
+                            <label class="form-check-label" for="adminRemember">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-login">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login as Admin
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="demo-info">
+                <h6><i class="fas fa-info-circle me-1"></i>Demo Credentials:</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Student:</strong><br>
+                        Email: student@school.com<br>
+                        Password: student123
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Admin:</strong><br>
+                        Email: admin@school.com<br>
+                        Password: admin123
+                    </div>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <strong>Teacher:</strong><br>
+                        Email: teacher@school.com<br>
+                        Password: teacher123
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Student Login Handler
+        document.getElementById('studentLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('studentEmail').value;
+            const password = document.getElementById('studentPassword').value;
+
+            // Simple validation (in real app, this would be server-side)
+            if (email && password) {
+                // Store login info in localStorage
+                localStorage.setItem('userType', 'student');
+                localStorage.setItem('userEmail', email);
+
+                // Redirect to student dashboard
+                window.location.href = 'student-dashboard.html';
+            } else {
+                showAlert('Please fill in all fields', 'danger');
+            }
+        });
+
+        // Teacher Login Handler
+        document.getElementById('teacherLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('teacherEmail').value;
+            const password = document.getElementById('teacherPassword').value;
+
+            if (email && password) {
+                localStorage.setItem('userType', 'teacher');
+                localStorage.setItem('userEmail', email);
+                window.location.href = 'student-manage.html';
+            } else {
+                showAlert('Please fill in all fields', 'danger');
+            }
+        });
+
+        // Admin Login Handler
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Simple validation (in real app, this would be server-side)
+            if (email && password) {
+                // Store login info in localStorage
+                localStorage.setItem('userType', 'admin');
+                localStorage.setItem('userEmail', email);
+
+                // Redirect to admin dashboard
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                showAlert('Please fill in all fields', 'danger');
+            }
+        });
+
+        // Show alert function
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const userType = localStorage.getItem('userType');
+            if (userType === 'student') {
+                window.location.href = 'student-dashboard.html';
+            } else if (userType === 'teacher') {
+                window.location.href = 'student-manage.html';
+            } else if (userType === 'admin') {
+                window.location.href = 'admin-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
